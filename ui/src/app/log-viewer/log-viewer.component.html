@@ -1,0 +1,26 @@
+<div class="log-viewer">
+  <div class="search-container">
+    <nz-input-group [nzSuffix]="suffixIcon">
+      <input nz-input [formControl]="searchControl" placeholder="搜索日志内容..." />
+    </nz-input-group>
+    <ng-template #suffixIcon>
+      <span nz-icon nzType="search"></span>
+    </ng-template>
+  </div>
+
+  <nz-table nzSize="small" nzTableLayout="auto" #basicTable [nzData]="filteredLogs" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th *ngFor="let key of keys">{{ key }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of filteredLogs">
+        <td (click)="onRowClick(log)" *ngFor="let key of keys" [ngClass]="{
+          'error': log.new_text.toLowerCase().includes('error'),
+          'warn': log.new_text.toLowerCase().includes('warn')
+        }">{{ log.new_text | logLevel: key: key === 'ts' }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>
